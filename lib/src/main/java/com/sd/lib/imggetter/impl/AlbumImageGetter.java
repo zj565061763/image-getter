@@ -23,7 +23,7 @@ public class AlbumImageGetter extends BaseImageGetter
     @Override
     public void start()
     {
-        ImageGetterActivity.startAlbum(mActivity, new ImageGetterActivity.Callback()
+        ImageGetterActivity.startAlbum(getActivity(), new ImageGetterActivity.Callback()
         {
             @Override
             public void onStartError(Exception e)
@@ -66,7 +66,7 @@ public class AlbumImageGetter extends BaseImageGetter
         String path = null;
         try
         {
-            path = getDataColumn(mActivity, uri, null, null);
+            path = getDataColumn(getActivity(), uri, null, null);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class AlbumImageGetter extends BaseImageGetter
             return;
         }
 
-        mSuccessCallback.onSuccess(path);
+        notifySuccess(path);
     }
 
     private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs)

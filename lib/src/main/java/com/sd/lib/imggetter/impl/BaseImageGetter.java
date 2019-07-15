@@ -6,13 +6,13 @@ import android.widget.Toast;
 import com.sd.lib.imggetter.ImageGetter;
 import com.sd.lib.imggetter.R;
 
-public abstract class BaseImageGetter implements ImageGetter
+abstract class BaseImageGetter implements ImageGetter
 {
-    protected final Activity mActivity;
+    private final Activity mActivity;
 
-    protected SuccessCallback mSuccessCallback;
-    protected ErrorCallback mErrorCallback;
-    protected CancelCallback mCancelCallback;
+    private SuccessCallback mSuccessCallback;
+    private ErrorCallback mErrorCallback;
+    private CancelCallback mCancelCallback;
 
     public BaseImageGetter(Activity activity)
     {
@@ -22,27 +22,38 @@ public abstract class BaseImageGetter implements ImageGetter
     }
 
     @Override
-    public ImageGetter onSuccess(SuccessCallback callback)
+    public final ImageGetter onSuccess(SuccessCallback callback)
     {
         mSuccessCallback = callback;
         return this;
     }
 
     @Override
-    public ImageGetter onError(ErrorCallback callback)
+    public final ImageGetter onError(ErrorCallback callback)
     {
         mErrorCallback = callback;
         return this;
     }
 
     @Override
-    public ImageGetter onCancel(CancelCallback callback)
+    public final ImageGetter onCancel(CancelCallback callback)
     {
         mCancelCallback = callback;
         return this;
     }
 
-    protected void notifyError(Error error, Exception e, int defaultTips)
+    protected final Activity getActivity()
+    {
+        return mActivity;
+    }
+
+    protected final void notifySuccess(String path)
+    {
+        if (mSuccessCallback != null)
+            mSuccessCallback.onSuccess(path);
+    }
+
+    protected final void notifyError(Error error, Exception e, int defaultTips)
     {
         if (mErrorCallback != null && mErrorCallback.onError(error, e))
         {
@@ -52,7 +63,7 @@ public abstract class BaseImageGetter implements ImageGetter
         }
     }
 
-    protected void notifyCancel()
+    protected final void notifyCancel()
     {
         if (mCancelCallback != null && mCancelCallback.onCancel())
         {

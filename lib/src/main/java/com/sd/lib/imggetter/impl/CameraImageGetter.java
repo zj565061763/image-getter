@@ -39,7 +39,7 @@ public class CameraImageGetter extends BaseImageGetter
         if (uri == null)
             throw new RuntimeException("Camera file uri is null, see fileUri(Uri uri) method");
 
-        ImageGetterActivity.startCamera(mActivity, uri, new ImageGetterActivity.Callback()
+        ImageGetterActivity.startCamera(getActivity(), uri, new ImageGetterActivity.Callback()
         {
             @Override
             public void onStartError(Exception e)
@@ -53,7 +53,7 @@ public class CameraImageGetter extends BaseImageGetter
                 if (resultCode == Activity.RESULT_OK)
                 {
                     final String path = uri.toString().substring(uri.getScheme().length() + 3);
-                    mSuccessCallback.onSuccess(path);
+                    notifySuccess(path);
                 } else if (resultCode == Activity.RESULT_CANCELED)
                 {
                     notifyCancel();
