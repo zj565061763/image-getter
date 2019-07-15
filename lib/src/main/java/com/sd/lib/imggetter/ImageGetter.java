@@ -4,20 +4,27 @@ import java.io.File;
 
 public interface ImageGetter
 {
-    ImageGetter setResultCallback(ResultCallback callback);
+    ImageGetter onSuccess(SuccessCallback callback);
 
-    ImageGetter setErrorCallback(ErrorCallback callback);
+    ImageGetter onError(ErrorCallback callback);
+
+    ImageGetter onCancel(CancelCallback callback);
 
     void start();
 
-    interface ResultCallback
+    interface SuccessCallback
     {
-        void onResult(File file);
+        void onSuccess(File file);
     }
 
     interface ErrorCallback
     {
-        void onError(Error error, String msg);
+        boolean onError(Error error, Exception e);
+    }
+
+    interface CancelCallback
+    {
+        void onCancel();
     }
 
     enum Error

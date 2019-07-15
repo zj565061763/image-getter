@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">lib</string>
+    <string name="lib_image_getter_open_album_failed">打开相册失败</string>
+    <string name="lib_image_getter_open_camera_failed">打开相机失败</string>
 </resources>
