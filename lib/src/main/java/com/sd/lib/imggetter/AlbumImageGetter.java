@@ -1,4 +1,4 @@
-package com.sd.lib.imggetter.impl;
+package com.sd.lib.imggetter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-
-import com.sd.lib.imggetter.R;
 
 /**
  * 相册获取图片

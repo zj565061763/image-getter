@@ -1,11 +1,8 @@
-package com.sd.lib.imggetter.impl;
+package com.sd.lib.imggetter;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-
-import com.sd.lib.imggetter.ImageGetter;
-import com.sd.lib.imggetter.R;
 
 /**
  * 摄像头获取图片

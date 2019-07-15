@@ -1,4 +1,4 @@
-package com.sd.lib.imggetter.impl;
+package com.sd.lib.imggetter;
 
 import android.app.Activity;
 import android.app.Application;
@@ -85,7 +85,7 @@ public final class ImageGetterActivity extends Activity
                 startCamera();
                 break;
             default:
-                break;
+                throw new RuntimeException("Unknown type:" + mType);
         }
 
         getApplication().registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);

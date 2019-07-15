@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.sd.lib.imggetter.ImageGetter;
-import com.sd.lib.imggetter.impl.AlbumImageGetter;
-import com.sd.lib.imggetter.impl.CameraImageGetter;
+import com.sd.lib.imggetter.AlbumImageGetter;
+import com.sd.lib.imggetter.CameraImageGetter;
 
 import java.io.File;
 

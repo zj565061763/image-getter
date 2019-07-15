@@ -1,10 +1,7 @@
-package com.sd.lib.imggetter.impl;
+package com.sd.lib.imggetter;
 
 import android.app.Activity;
 import android.widget.Toast;
-
-import com.sd.lib.imggetter.ImageGetter;
-import com.sd.lib.imggetter.R;
 
 abstract class BaseImageGetter implements ImageGetter
 {

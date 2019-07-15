@@ -3,7 +3,7 @@
 
     <application>
 
-        <activity android:name=".impl.ImageGetterActivity" />
+        <activity android:name=".ImageGetterActivity" />
 
     </application>
 
