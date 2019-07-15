@@ -24,11 +24,14 @@ public interface ImageGetter
 
     interface CancelCallback
     {
-        void onCancel();
+        boolean onCancel();
     }
 
     enum Error
     {
         Start,
+        ResultEmpty,
+        Result,
+        Other,
     }
 }
