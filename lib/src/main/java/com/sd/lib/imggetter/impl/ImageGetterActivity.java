@@ -53,6 +53,12 @@ public final class ImageGetterActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        if (sCallback == null)
+        {
+            finish();
+            return;
+        }
+
         mType = getIntent().getIntExtra(EXTRA_TYPE, 0);
         if (mType <= 0)
         {
