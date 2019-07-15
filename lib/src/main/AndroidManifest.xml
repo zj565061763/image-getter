@@ -1,2 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sd.lib.imggetter" />
+    package="com.sd.lib.imggetter">
+
+    <application>
+
+        <activity android:name=".impl.ImageGetterActivity" />
+
+    </application>
+
+</manifest>
