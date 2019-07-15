@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.i(TAG, "camera onError:" + error + " " + e);
                         return false;
                     }
-                });
+                }).start();
                 break;
             default:
                 break;
