@@ -7,8 +7,7 @@ import android.view.View;
 
 import com.sd.lib.imggetter.ImageGetter;
 import com.sd.lib.imggetter.impl.AlbumImageGetter;
-
-import java.io.File;
+import com.sd.lib.imggetter.impl.CameraImageGetter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -30,9 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new AlbumImageGetter(this).onSuccess(new ImageGetter.SuccessCallback()
                 {
                     @Override
-                    public void onSuccess(File file)
+                    public void onSuccess(String file)
                     {
-                        Log.i(TAG, "album onSuccess:" + file.getAbsolutePath());
+                        Log.i(TAG, "album onSuccess:" + file);
                     }
                 }).onCancel(new ImageGetter.CancelCallback()
                 {
@@ -53,6 +52,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).start();
                 break;
             case R.id.btn_camera:
+                new CameraImageGetter(this).onSuccess(new ImageGetter.SuccessCallback()
+                {
+                    @Override
+                    public void onSuccess(String file)
+                    {
+                        Log.i(TAG, "camera onSuccess:" + file);
+                    }
+                }).onCancel(new ImageGetter.CancelCallback()
+                {
+                    @Override
+                    public boolean onCancel()
+                    {
+                        Log.i(TAG, "camera onCancel");
+                        return false;
+                    }
+                }).onError(new ImageGetter.ErrorCallback()
+                {
+                    @Override
+                    public boolean onError(ImageGetter.Error error, Exception e)
+                    {
+                        Log.i(TAG, "camera onError:" + error + " " + e);
+                        return false;
+                    }
+                });
                 break;
             default:
                 break;
