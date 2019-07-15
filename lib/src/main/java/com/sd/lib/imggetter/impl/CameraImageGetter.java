@@ -52,7 +52,8 @@ public class CameraImageGetter extends BaseImageGetter
             {
                 if (resultCode == Activity.RESULT_OK)
                 {
-                    mSuccessCallback.onSuccess(uri.toString());
+                    final String path = uri.toString().substring(uri.getScheme().length() + 3);
+                    mSuccessCallback.onSuccess(path);
                 } else if (resultCode == Activity.RESULT_CANCELED)
                 {
                     notifyCancel();
