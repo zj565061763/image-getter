@@ -1,9 +1,12 @@
-package com.sd.lib.imggetter;
+package com.sd.lib.imggetter.impl;
 
 import android.app.Activity;
 import android.widget.Toast;
 
-abstract class BaseImageGetter implements ImageGetter
+import com.sd.lib.imggetter.ImageGetter;
+import com.sd.lib.imggetter.R;
+
+abstract class BaseImageGetter<T extends ImageGetter> implements ImageGetter<T>
 {
     private final Activity mActivity;
 
@@ -19,24 +22,24 @@ abstract class BaseImageGetter implements ImageGetter
     }
 
     @Override
-    public final ImageGetter onSuccess(SuccessCallback callback)
+    public final T onSuccess(SuccessCallback callback)
     {
         mSuccessCallback = callback;
-        return this;
+        return (T) this;
     }
 
     @Override
-    public final ImageGetter onError(ErrorCallback callback)
+    public final T onError(ErrorCallback callback)
     {
         mErrorCallback = callback;
-        return this;
+        return (T) this;
     }
 
     @Override
-    public final ImageGetter onCancel(CancelCallback callback)
+    public final T onCancel(CancelCallback callback)
     {
         mCancelCallback = callback;
-        return this;
+        return (T) this;
     }
 
     protected final Activity getActivity()

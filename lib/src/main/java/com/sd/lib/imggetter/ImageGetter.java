@@ -1,6 +1,6 @@
 package com.sd.lib.imggetter;
 
-public interface ImageGetter
+public interface ImageGetter<T extends ImageGetter>
 {
     /**
      * 设置成功回调
@@ -8,7 +8,7 @@ public interface ImageGetter
      * @param callback
      * @return
      */
-    ImageGetter onSuccess(SuccessCallback callback);
+    T onSuccess(SuccessCallback callback);
 
     /**
      * 设置失败回调
@@ -16,7 +16,7 @@ public interface ImageGetter
      * @param callback
      * @return
      */
-    ImageGetter onError(ErrorCallback callback);
+    T onError(ErrorCallback callback);
 
     /**
      * 设置取消回调
@@ -24,7 +24,7 @@ public interface ImageGetter
      * @param callback
      * @return
      */
-    ImageGetter onCancel(CancelCallback callback);
+    T onCancel(CancelCallback callback);
 
     /**
      * 开始

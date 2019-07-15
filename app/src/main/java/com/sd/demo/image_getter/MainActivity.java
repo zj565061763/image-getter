@@ -7,8 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.sd.lib.imggetter.ImageGetter;
-import com.sd.lib.imggetter.AlbumImageGetter;
-import com.sd.lib.imggetter.CameraImageGetter;
+import com.sd.lib.imggetter.impl.FImageGetter;
 
 import java.io.File;
 
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.btn_album:
-                new AlbumImageGetter(this).onSuccess(new ImageGetter.SuccessCallback()
+                FImageGetter.album(this).onSuccess(new ImageGetter.SuccessCallback()
                 {
                     @Override
                     public void onSuccess(String file)
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_camera:
                 final File file = new File(getCacheDir(), "camera.jpg");
-                new CameraImageGetter(this).fileUri(Uri.fromFile(file)).onSuccess(new ImageGetter.SuccessCallback()
+                FImageGetter.camera(this).fileUri(Uri.fromFile(file)).onSuccess(new ImageGetter.SuccessCallback()
                 {
                     @Override
                     public void onSuccess(String file)

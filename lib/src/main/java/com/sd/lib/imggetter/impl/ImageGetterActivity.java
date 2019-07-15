@@ -1,4 +1,4 @@
-package com.sd.lib.imggetter;
+package com.sd.lib.imggetter.impl;
 
 import android.app.Activity;
 import android.app.Application;
