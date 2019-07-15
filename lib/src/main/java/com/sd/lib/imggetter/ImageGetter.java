@@ -1,7 +1,5 @@
 package com.sd.lib.imggetter;
 
-import java.io.File;
-
 public interface ImageGetter
 {
     /**
@@ -35,7 +33,7 @@ public interface ImageGetter
 
     interface SuccessCallback
     {
-        void onSuccess(File file);
+        void onSuccess(String file);
     }
 
     interface ErrorCallback

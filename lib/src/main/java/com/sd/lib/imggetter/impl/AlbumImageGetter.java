@@ -10,8 +10,6 @@ import android.text.TextUtils;
 
 import com.sd.lib.imggetter.R;
 
-import java.io.File;
-
 /**
  * 相册获取图片
  */
@@ -82,7 +80,7 @@ public class AlbumImageGetter extends BaseImageGetter
             return;
         }
 
-        mSuccessCallback.onSuccess(new File(path));
+        mSuccessCallback.onSuccess(path);
     }
 
     private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs)
