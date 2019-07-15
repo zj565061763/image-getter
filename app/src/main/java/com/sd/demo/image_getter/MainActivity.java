@@ -1,5 +1,6 @@
 package com.sd.demo.image_getter;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.view.View;
 import com.sd.lib.imggetter.ImageGetter;
 import com.sd.lib.imggetter.impl.AlbumImageGetter;
 import com.sd.lib.imggetter.impl.CameraImageGetter;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -52,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).start();
                 break;
             case R.id.btn_camera:
-                new CameraImageGetter(this).onSuccess(new ImageGetter.SuccessCallback()
+                final File file = new File(getCacheDir(), "camera.jpg");
+                new CameraImageGetter(this).fileUri(Uri.fromFile(file)).onSuccess(new ImageGetter.SuccessCallback()
                 {
                     @Override
                     public void onSuccess(String file)
