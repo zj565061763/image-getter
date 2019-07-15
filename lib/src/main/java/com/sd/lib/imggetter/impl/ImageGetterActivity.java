@@ -1,6 +1,7 @@
 package com.sd.lib.imggetter.impl;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ public final class ImageGetterActivity extends Activity
     private static final String EXTRA_TYPE = "extra_type";
     private static final String EXTRA_TYPE_CAMERA_FILE = "extra_type_camera_file";
 
+    private static Activity sActivity;
     private static Callback sCallback;
 
     static void startAlbum(Activity context, Callback callback)
@@ -31,17 +33,21 @@ public final class ImageGetterActivity extends Activity
             context.startActivity(intent);
     }
 
-    private static Intent getIntent(Activity context, int type, Callback callback)
+    private static Intent getIntent(Activity activity, int type, Callback callback)
     {
         if (callback == null)
             throw new IllegalArgumentException("callback is null");
+
+        if (activity == null)
+            throw new IllegalArgumentException("activity is null");
 
         if (sCallback != null)
             return null;
 
         sCallback = callback;
+        sActivity = activity;
 
-        final Intent intent = new Intent(context, ImageGetterActivity.class);
+        final Intent intent = new Intent(activity, ImageGetterActivity.class);
         intent.putExtra(EXTRA_TYPE, type);
         return intent;
     }
@@ -81,6 +87,8 @@ public final class ImageGetterActivity extends Activity
             default:
                 break;
         }
+
+        getApplication().registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
     }
 
     private void startAlbum()
@@ -94,7 +102,6 @@ public final class ImageGetterActivity extends Activity
         } catch (Exception e)
         {
             sCallback.onStartError(e);
-            sCallback = null;
             finish();
         }
     }
@@ -110,10 +117,51 @@ public final class ImageGetterActivity extends Activity
         } catch (Exception e)
         {
             sCallback.onStartError(e);
-            sCallback = null;
             finish();
         }
     }
+
+    private final Application.ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks()
+    {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState)
+        {
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState)
+        {
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity)
+        {
+            if (sActivity == activity)
+            {
+                finish();
+            }
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -131,7 +179,6 @@ public final class ImageGetterActivity extends Activity
                 throw new RuntimeException("Unknown request code:" + requestCode);
         }
 
-        sCallback = null;
         finish();
     }
 
@@ -140,6 +187,8 @@ public final class ImageGetterActivity extends Activity
     {
         super.onDestroy();
         sCallback = null;
+        sActivity = null;
+        getApplication().unregisterActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
     }
 
     interface Callback
