@@ -35,7 +35,7 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
         if (uri == null)
             throw new RuntimeException("Camera file uri is null, see fileUri(Uri uri) method");
 
-        ImageGetterActivity.startCamera(getActivity(), uri, new ImageGetterActivity.Callback()
+        ImageGetterFragment.startCamera(getActivity(), uri, new ImageGetterFragment.Callback()
         {
             @Override
             public void onStartError(Exception e)

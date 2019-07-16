@@ -1,13 +1,13 @@
 package com.sd.lib.imggetter.impl;
 
 import android.app.Activity;
-import android.app.Application;
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
-public final class ImageGetterActivity extends Activity
+public final class ImageGetterFragment extends Fragment
 {
     private static final int TYPE_ALBUM = 1;
     private static final int TYPE_CAMERA = 2;
@@ -15,27 +15,28 @@ public final class ImageGetterActivity extends Activity
     private static final String EXTRA_TYPE = "extra_type";
     private static final String EXTRA_TYPE_CAMERA_FILE = "extra_type_camera_file";
 
-    private static Activity sActivity;
     private static Callback sCallback;
 
     static void startAlbum(Activity activity, Callback callback)
     {
-        final Intent intent = getIntent(activity, TYPE_ALBUM, callback);
-        if (intent != null)
-            activity.startActivity(intent);
+        final Fragment fragment = createFragment(activity, TYPE_ALBUM, callback);
+        if (fragment != null)
+        {
+            activity.getFragmentManager().beginTransaction().add(android.R.id.content, fragment).commitAllowingStateLoss();
+        }
     }
 
     static void startCamera(Activity activity, Uri uri, Callback callback)
     {
-        final Intent intent = getIntent(activity, TYPE_CAMERA, callback);
-        if (intent != null)
+        final Fragment fragment = createFragment(activity, TYPE_CAMERA, callback);
+        if (fragment != null)
         {
-            intent.putExtra(EXTRA_TYPE_CAMERA_FILE, uri);
-            activity.startActivity(intent);
+            fragment.getArguments().putParcelable(EXTRA_TYPE_CAMERA_FILE, uri);
+            activity.getFragmentManager().beginTransaction().add(android.R.id.content, fragment).commitAllowingStateLoss();
         }
     }
 
-    private static Intent getIntent(Activity activity, int type, Callback callback)
+    private static Fragment createFragment(Activity activity, int type, Callback callback)
     {
         if (callback == null)
             throw new IllegalArgumentException("callback is null");
@@ -47,34 +48,36 @@ public final class ImageGetterActivity extends Activity
             return null;
 
         sCallback = callback;
-        sActivity = activity;
 
-        final Intent intent = new Intent(activity, ImageGetterActivity.class);
-        intent.putExtra(EXTRA_TYPE, type);
-        return intent;
+        final Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_TYPE, type);
+
+        final ImageGetterFragment fragment = new ImageGetterFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     private int mType = 0;
     private Uri mCameraFileUri;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         if (sCallback == null)
         {
-            finish();
+            removeSelf();
             return;
         }
 
-        mType = getIntent().getIntExtra(EXTRA_TYPE, 0);
+        mType = getArguments().getInt(EXTRA_TYPE, 0);
         if (mType <= 0)
         {
-            finish();
+            removeSelf();
             return;
         }
 
-        mCameraFileUri = getIntent().getParcelableExtra(EXTRA_TYPE_CAMERA_FILE);
+        mCameraFileUri = getArguments().getParcelable(EXTRA_TYPE_CAMERA_FILE);
 
         switch (mType)
         {
@@ -89,8 +92,11 @@ public final class ImageGetterActivity extends Activity
             default:
                 throw new RuntimeException("Unknown type:" + mType);
         }
+    }
 
-        getApplication().registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
+    private void removeSelf()
+    {
+        getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
     }
 
     private void startAlbum()
@@ -104,7 +110,7 @@ public final class ImageGetterActivity extends Activity
         } catch (Exception e)
         {
             sCallback.onStartError(e);
-            finish();
+            removeSelf();
         }
     }
 
@@ -119,54 +125,12 @@ public final class ImageGetterActivity extends Activity
         } catch (Exception e)
         {
             sCallback.onStartError(e);
-            finish();
+            removeSelf();
         }
     }
 
-    private final Application.ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks()
-    {
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState)
-        {
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity)
-        {
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity)
-        {
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity)
-        {
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity)
-        {
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState)
-        {
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity)
-        {
-            if (sActivity == activity)
-            {
-                finish();
-            }
-        }
-    };
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode)
@@ -181,16 +145,14 @@ public final class ImageGetterActivity extends Activity
                 throw new RuntimeException("Unknown request code:" + requestCode);
         }
 
-        finish();
+        removeSelf();
     }
 
     @Override
-    protected void onDestroy()
+    public void onDestroy()
     {
         super.onDestroy();
         sCallback = null;
-        sActivity = null;
-        getApplication().unregisterActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
     }
 
     interface Callback

@@ -25,7 +25,7 @@ class SimpleAlbumImageGetter extends BaseImageGetter<AlbumImageGetter> implement
     @Override
     public void start()
     {
-        ImageGetterActivity.startAlbum(getActivity(), new ImageGetterActivity.Callback()
+        ImageGetterFragment.startAlbum(getActivity(), new ImageGetterFragment.Callback()
         {
             @Override
             public void onStartError(Exception e)
