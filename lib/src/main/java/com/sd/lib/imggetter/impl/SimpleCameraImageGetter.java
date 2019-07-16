@@ -44,6 +44,12 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
             }
 
             @Override
+            public void onPermissionDenied()
+            {
+                notifyError(Error.Permission, null, R.string.lib_image_getter_tips_error_permission_camera);
+            }
+
+            @Override
             public void onActivityResult(int resultCode, Intent data)
             {
                 if (resultCode == Activity.RESULT_OK)
