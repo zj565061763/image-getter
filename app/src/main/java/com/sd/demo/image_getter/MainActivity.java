@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).start();
                 break;
             case R.id.btn_camera:
-                final File file = new File(getCacheDir(), "camera.jpg");
-                FImageGetter.camera(this).fileUri(Uri.fromFile(file)).onSuccess(new ImageGetter.SuccessCallback()
+                FImageGetter.camera(this).onSuccess(new ImageGetter.SuccessCallback()
                 {
                     @Override
                     public void onSuccess(String file)

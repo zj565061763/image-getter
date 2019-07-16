@@ -8,12 +8,14 @@ import com.sd.lib.imggetter.CameraImageGetter;
 import com.sd.lib.imggetter.ImageGetter;
 import com.sd.lib.imggetter.R;
 
+import java.io.File;
+
 /**
  * 摄像头获取图片
  */
 class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> implements CameraImageGetter
 {
-    private Uri mFileUri;
+    private File mFile;
 
     public SimpleCameraImageGetter(Activity activity)
     {
@@ -21,19 +23,28 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
     }
 
     @Override
-    public CameraImageGetter fileUri(Uri uri)
+    public CameraImageGetter file(File file)
     {
-        mFileUri = uri;
+        mFile = file;
         return this;
     }
 
     @Override
     public void start()
     {
-        final Uri uri = mFileUri;
+        File cameraFile = mFile;
+        if (cameraFile == null)
+        {
+            cameraFile = Utils.newCameraFile(getActivity());
+            if (cameraFile == null)
+            {
+                notifyError(Error.CreateCameraFile, null, R.string.lib_image_getter_tips_error_create_camera_file);
+                return;
+            }
+        }
 
-        if (uri == null)
-            throw new RuntimeException("Camera file uri is null, see fileUri(Uri uri) method");
+        final File file = cameraFile;
+        final Uri uri = Utils.getUri(getActivity(), file);
 
         ImageGetterFragment.startCamera(getActivity(), uri, new ImageGetterFragment.Callback()
         {
@@ -48,7 +59,7 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
             {
                 if (resultCode == Activity.RESULT_OK)
                 {
-                    final String path = uri.toString().substring(uri.getScheme().length() + 3);
+                    final String path = file.getAbsolutePath();
                     notifySuccess(path);
                 } else if (resultCode == Activity.RESULT_CANCELED)
                 {

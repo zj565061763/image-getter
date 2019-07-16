@@ -49,6 +49,7 @@ public interface ImageGetter<T extends ImageGetter>
     enum Error
     {
         Start,
+        CreateCameraFile,
         ResultEmpty,
         Result,
         Other,

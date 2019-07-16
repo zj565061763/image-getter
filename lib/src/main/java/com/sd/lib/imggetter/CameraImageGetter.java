@@ -1,14 +1,14 @@
 package com.sd.lib.imggetter;
 
-import android.net.Uri;
+import java.io.File;
 
 public interface CameraImageGetter extends ImageGetter<CameraImageGetter>
 {
     /**
-     * 设置拍照保存文件的Uri
+     * 设置拍照保存文件
      *
-     * @param uri
+     * @param file
      * @return
      */
-    CameraImageGetter fileUri(Uri uri);
+    CameraImageGetter file(File file);
 }
