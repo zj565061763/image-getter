@@ -2,7 +2,9 @@ package com.sd.lib.imggetter.impl;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import com.sd.lib.imggetter.CameraImageGetter;
 import com.sd.lib.imggetter.ImageGetter;
@@ -16,6 +18,7 @@ import java.io.File;
 class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> implements CameraImageGetter
 {
     private File mFile;
+    private MediaScannerConnection mScannerConnection;
 
     public SimpleCameraImageGetter(Activity activity)
     {
@@ -59,7 +62,7 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
             {
                 if (resultCode == Activity.RESULT_OK)
                 {
-                    Utils.scanFile(getActivity(), file);
+                    scanFile(file);
                     final String path = file.getAbsolutePath();
                     notifySuccess(path);
                 } else if (resultCode == Activity.RESULT_CANCELED)
@@ -71,5 +74,33 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
                 }
             }
         });
+    }
+
+    private void scanFile(final File file)
+    {
+        if (mScannerConnection == null)
+        {
+            mScannerConnection = new MediaScannerConnection(getActivity(), new MediaScannerConnection.MediaScannerConnectionClient()
+            {
+                @Override
+                public void onMediaScannerConnected()
+                {
+                    final String filePath = file.getAbsolutePath();
+                    final String extension = MimeTypeMap.getFileExtensionFromUrl(filePath);
+                    final String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                    mScannerConnection.scanFile(filePath, mimeType);
+                }
+
+                @Override
+                public void onScanCompleted(String path, Uri uri)
+                {
+                    mScannerConnection.disconnect();
+                    mScannerConnection = null;
+                }
+            });
+        }
+
+        if (!mScannerConnection.isConnected())
+            mScannerConnection.connect();
     }
 }

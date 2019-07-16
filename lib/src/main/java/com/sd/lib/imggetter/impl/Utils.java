@@ -1,7 +1,6 @@
 package com.sd.lib.imggetter.impl;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -64,16 +63,5 @@ class Utils
         {
             return Uri.fromFile(file);
         }
-    }
-
-    public static void scanFile(Context context, File file)
-    {
-        if (file == null || !file.exists())
-            return;
-
-        final Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(getUri(context, file));
-        context.sendBroadcast(intent);
     }
 }
