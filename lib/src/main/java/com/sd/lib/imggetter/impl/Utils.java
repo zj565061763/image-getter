@@ -23,6 +23,9 @@ class Utils
             dir = context.getFilesDir();
         }
 
+        if (dir != null)
+            dir = new File(dir, "Camera");
+
         dir = mkdirs(dir);
         if (dir == null)
         {
