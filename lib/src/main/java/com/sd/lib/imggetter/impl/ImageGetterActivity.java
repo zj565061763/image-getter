@@ -28,9 +28,11 @@ public final class ImageGetterActivity extends Activity
     static void startCamera(Activity context, Uri uri, Callback callback)
     {
         final Intent intent = getIntent(context, TYPE_CAMERA, callback);
-        intent.putExtra(EXTRA_TYPE_CAMERA_FILE, uri);
         if (intent != null)
+        {
+            intent.putExtra(EXTRA_TYPE_CAMERA_FILE, uri);
             context.startActivity(intent);
+        }
     }
 
     private static Intent getIntent(Activity activity, int type, Callback callback)
