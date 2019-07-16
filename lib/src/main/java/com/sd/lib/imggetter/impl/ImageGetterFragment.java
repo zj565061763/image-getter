@@ -15,8 +15,6 @@ public final class ImageGetterFragment extends Fragment
     private static final String EXTRA_TYPE = "extra_type";
     private static final String EXTRA_TYPE_CAMERA_FILE = "extra_type_camera_file";
 
-    private static Callback sCallback;
-
     static void startAlbum(Activity activity, Callback callback)
     {
         final Fragment fragment = createFragment(activity, TYPE_ALBUM, callback);
@@ -44,27 +42,24 @@ public final class ImageGetterFragment extends Fragment
         if (activity == null)
             throw new IllegalArgumentException("activity is null");
 
-        if (sCallback != null)
-            return null;
-
-        sCallback = callback;
-
         final Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_TYPE, type);
 
         final ImageGetterFragment fragment = new ImageGetterFragment();
         fragment.setArguments(bundle);
+        fragment.mCallback = callback;
         return fragment;
     }
 
     private int mType = 0;
     private Uri mCameraFileUri;
+    private Callback mCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (sCallback == null)
+        if (mCallback == null)
         {
             removeSelf();
             return;
@@ -110,7 +105,7 @@ public final class ImageGetterFragment extends Fragment
             startActivityForResult(intent, TYPE_ALBUM);
         } catch (Exception e)
         {
-            sCallback.onStartError(e);
+            mCallback.onStartError(e);
             removeSelf();
         }
     }
@@ -125,7 +120,7 @@ public final class ImageGetterFragment extends Fragment
             startActivityForResult(intent, TYPE_CAMERA);
         } catch (Exception e)
         {
-            sCallback.onStartError(e);
+            mCallback.onStartError(e);
             removeSelf();
         }
     }
@@ -137,23 +132,16 @@ public final class ImageGetterFragment extends Fragment
         switch (requestCode)
         {
             case TYPE_ALBUM:
-                sCallback.onActivityResult(resultCode, data);
+                mCallback.onActivityResult(resultCode, data);
                 break;
             case TYPE_CAMERA:
-                sCallback.onActivityResult(resultCode, data);
+                mCallback.onActivityResult(resultCode, data);
                 break;
             default:
                 throw new RuntimeException("Unknown request code:" + requestCode);
         }
 
         removeSelf();
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        sCallback = null;
     }
 
     interface Callback
