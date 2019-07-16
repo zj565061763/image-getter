@@ -34,12 +34,6 @@ class SimpleAlbumImageGetter extends BaseImageGetter<AlbumImageGetter> implement
             }
 
             @Override
-            public void onPermissionDenied()
-            {
-
-            }
-
-            @Override
             public void onActivityResult(int resultCode, Intent data)
             {
                 if (resultCode == Activity.RESULT_OK)

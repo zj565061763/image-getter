@@ -1,20 +1,14 @@
 package com.sd.lib.imggetter.impl;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 
 public final class ImageGetterFragment extends Fragment
 {
-    private static final int REQUEST_CODE_CAMERA = 1000;
-
     private static final int TYPE_ALBUM = 1;
     private static final int TYPE_CAMERA = 2;
 
@@ -94,23 +88,7 @@ public final class ImageGetterFragment extends Fragment
                 if (mCameraFileUri == null)
                     throw new RuntimeException("Camera file uri is null");
 
-                final int result = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-                if (result == PackageManager.PERMISSION_GRANTED)
-                {
-                    if (hasCameraPermission())
-                    {
-                        startCamera();
-                    } else
-                    {
-                        sCallback.onPermissionDenied();
-                        removeSelf();
-                    }
-                } else
-                {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.CAMERA},
-                            REQUEST_CODE_CAMERA);
-                }
+                startCamera();
                 break;
             default:
                 throw new RuntimeException("Unknown type:" + mType);
@@ -152,43 +130,6 @@ public final class ImageGetterFragment extends Fragment
         }
     }
 
-    private boolean hasCameraPermission()
-    {
-        Camera camera = null;
-        try
-        {
-            camera = Camera.open();
-            Camera.Parameters mParameters = camera.getParameters();
-            camera.setParameters(mParameters);
-            return true;
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-            return false;
-        } finally
-        {
-            if (camera != null)
-                camera.release();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_CAMERA)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                startCamera();
-            } else
-            {
-                sCallback.onPermissionDenied();
-                removeSelf();
-            }
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -218,8 +159,6 @@ public final class ImageGetterFragment extends Fragment
     interface Callback
     {
         void onStartError(Exception e);
-
-        void onPermissionDenied();
 
         void onActivityResult(int resultCode, Intent data);
     }

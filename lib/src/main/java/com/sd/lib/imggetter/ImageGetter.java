@@ -49,7 +49,6 @@ public interface ImageGetter<T extends ImageGetter>
     enum Error
     {
         Start,
-        Permission,
         ResultEmpty,
         Result,
         Other,
