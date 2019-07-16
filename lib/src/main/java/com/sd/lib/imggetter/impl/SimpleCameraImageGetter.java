@@ -59,6 +59,7 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
             {
                 if (resultCode == Activity.RESULT_OK)
                 {
+                    Utils.scanFile(getActivity(), file);
                     final String path = file.getAbsolutePath();
                     notifySuccess(path);
                 } else if (resultCode == Activity.RESULT_CANCELED)
