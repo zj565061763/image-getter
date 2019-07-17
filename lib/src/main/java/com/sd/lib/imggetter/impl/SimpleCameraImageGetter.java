@@ -41,7 +41,8 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
             cameraFile = Utils.newCameraFile(getActivity());
             if (cameraFile == null)
             {
-                notifyError(Error.CreateCameraFile, null, R.string.lib_image_getter_tips_error_create_camera_file);
+                final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_create_camera_file);
+                notifyError(Error.CreateCameraFile, null, desc);
                 return;
             }
         }
@@ -54,7 +55,8 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
             @Override
             public void onStartError(Exception e)
             {
-                notifyError(ImageGetter.Error.Start, e, R.string.lib_image_getter_tips_error_start_camera);
+                final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_start_camera);
+                notifyError(ImageGetter.Error.Start, e, desc);
             }
 
             @Override
@@ -70,7 +72,8 @@ class SimpleCameraImageGetter extends BaseImageGetter<CameraImageGetter> impleme
                     notifyCancel();
                 } else
                 {
-                    notifyError(ImageGetter.Error.Other, null, R.string.lib_image_getter_tips_error_other);
+                    final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_other);
+                    notifyError(ImageGetter.Error.Other, null, desc);
                 }
             }
         });

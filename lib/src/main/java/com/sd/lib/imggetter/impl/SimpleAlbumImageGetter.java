@@ -30,7 +30,8 @@ class SimpleAlbumImageGetter extends BaseImageGetter<AlbumImageGetter> implement
             @Override
             public void onStartError(Exception e)
             {
-                notifyError(ImageGetter.Error.Start, e, R.string.lib_image_getter_tips_error_start_album);
+                final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_start_album);
+                notifyError(ImageGetter.Error.Start, e, desc);
             }
 
             @Override
@@ -44,7 +45,8 @@ class SimpleAlbumImageGetter extends BaseImageGetter<AlbumImageGetter> implement
                     notifyCancel();
                 } else
                 {
-                    notifyError(ImageGetter.Error.Other, null, R.string.lib_image_getter_tips_error_other);
+                    final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_other);
+                    notifyError(ImageGetter.Error.Other, null, desc);
                 }
             }
         });
@@ -54,14 +56,16 @@ class SimpleAlbumImageGetter extends BaseImageGetter<AlbumImageGetter> implement
     {
         if (data == null)
         {
-            notifyError(ImageGetter.Error.ResultEmpty, null, R.string.lib_image_getter_tips_error_result_empty);
+            final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_result_empty);
+            notifyError(ImageGetter.Error.ResultEmpty, null, desc);
             return;
         }
 
         final Uri uri = data.getData();
         if (uri == null)
         {
-            notifyError(ImageGetter.Error.ResultEmpty, null, R.string.lib_image_getter_tips_error_result_empty);
+            final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_result_empty);
+            notifyError(ImageGetter.Error.ResultEmpty, null, desc);
             return;
         }
 
@@ -72,13 +76,15 @@ class SimpleAlbumImageGetter extends BaseImageGetter<AlbumImageGetter> implement
         } catch (Exception e)
         {
             e.printStackTrace();
-            notifyError(ImageGetter.Error.Result, null, R.string.lib_image_getter_tips_error_result);
+            final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_result);
+            notifyError(ImageGetter.Error.Result, e, desc);
             return;
         }
 
         if (TextUtils.isEmpty(path))
         {
-            notifyError(ImageGetter.Error.Result, null, R.string.lib_image_getter_tips_error_result);
+            final String desc = getActivity().getString(R.string.lib_image_getter_tips_error_result);
+            notifyError(ImageGetter.Error.Result, null, desc);
             return;
         }
 

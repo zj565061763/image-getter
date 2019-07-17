@@ -1,6 +1,5 @@
 package com.sd.demo.image_getter;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,8 +7,6 @@ import android.view.View;
 
 import com.sd.lib.imggetter.ImageGetter;
 import com.sd.lib.imggetter.impl.FImageGetter;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -38,18 +35,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).onCancel(new ImageGetter.CancelCallback()
                 {
                     @Override
-                    public boolean onCancel()
+                    public void onCancel()
                     {
                         Log.i(TAG, "album onCancel");
-                        return false;
                     }
                 }).onError(new ImageGetter.ErrorCallback()
                 {
                     @Override
-                    public boolean onError(ImageGetter.Error error, Exception e)
+                    public void onError(ImageGetter.Error error, String desc)
                     {
-                        Log.i(TAG, "album onError:" + error + " " + e);
-                        return false;
+                        Log.i(TAG, "album onError:" + error + " " + desc);
                     }
                 }).start();
                 break;
@@ -64,18 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).onCancel(new ImageGetter.CancelCallback()
                 {
                     @Override
-                    public boolean onCancel()
+                    public void onCancel()
                     {
                         Log.i(TAG, "camera onCancel");
-                        return false;
                     }
                 }).onError(new ImageGetter.ErrorCallback()
                 {
                     @Override
-                    public boolean onError(ImageGetter.Error error, Exception e)
+                    public void onError(ImageGetter.Error error, String desc)
                     {
-                        Log.i(TAG, "camera onError:" + error + " " + e);
-                        return false;
+                        Log.i(TAG, "camera onError:" + error + " " + desc);
                     }
                 }).start();
                 break;

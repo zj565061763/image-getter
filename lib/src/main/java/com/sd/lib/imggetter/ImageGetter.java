@@ -38,12 +38,12 @@ public interface ImageGetter<T extends ImageGetter>
 
     interface ErrorCallback
     {
-        boolean onError(Error error, Exception e);
+        void onError(Error error, String desc);
     }
 
     interface CancelCallback
     {
-        boolean onCancel();
+        void onCancel();
     }
 
     enum Error

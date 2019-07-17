@@ -1,10 +1,8 @@
 package com.sd.lib.imggetter.impl;
 
 import android.app.Activity;
-import android.widget.Toast;
 
 import com.sd.lib.imggetter.ImageGetter;
-import com.sd.lib.imggetter.R;
 
 abstract class BaseImageGetter<T extends ImageGetter> implements ImageGetter<T>
 {
@@ -53,23 +51,20 @@ abstract class BaseImageGetter<T extends ImageGetter> implements ImageGetter<T>
             mSuccessCallback.onSuccess(path);
     }
 
-    protected final void notifyError(Error error, Exception e, int defaultTips)
+    protected final void notifyError(Error error, Exception e, String desc)
     {
-        if (mErrorCallback != null && mErrorCallback.onError(error, e))
+        if (mErrorCallback != null)
         {
-        } else
-        {
-            Toast.makeText(mActivity, mActivity.getResources().getString(defaultTips), Toast.LENGTH_SHORT).show();
+            if (e != null)
+                desc = desc + ":" + e;
+
+            mErrorCallback.onError(error, desc);
         }
     }
 
     protected final void notifyCancel()
     {
-        if (mCancelCallback != null && mCancelCallback.onCancel())
-        {
-        } else
-        {
-            Toast.makeText(mActivity, mActivity.getResources().getString(R.string.lib_image_getter_tips_cancel), Toast.LENGTH_SHORT).show();
-        }
+        if (mCancelCallback != null)
+            mCancelCallback.onCancel();
     }
 }
