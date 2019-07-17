@@ -1,6 +1,7 @@
 package com.sd.lib.imggetter.impl;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.sd.lib.imggetter.ImageGetter;
 
@@ -53,12 +54,15 @@ abstract class BaseImageGetter<T extends ImageGetter> implements ImageGetter<T>
 
     protected final void notifyError(Error error, Exception e, String desc)
     {
+        if (e != null)
+            desc = desc + ":" + e;
+
         if (mErrorCallback != null)
         {
-            if (e != null)
-                desc = desc + ":" + e;
-
             mErrorCallback.onError(error, desc);
+        } else
+        {
+            Toast.makeText(mActivity, desc, Toast.LENGTH_SHORT).show();
         }
     }
 
