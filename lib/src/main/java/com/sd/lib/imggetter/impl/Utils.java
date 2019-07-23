@@ -2,9 +2,9 @@ package com.sd.lib.imggetter.impl;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
+
+import com.sd.lib.fileprovider.FFileProvider;
 
 import java.io.File;
 import java.util.UUID;
@@ -54,14 +54,6 @@ class Utils
         if (file == null)
             throw new IllegalArgumentException("file is null");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
-            return FileProvider.getUriForFile(context,
-                    context.getPackageName() + "." + MyFileProvider.class.getSimpleName().toLowerCase(),
-                    file);
-        } else
-        {
-            return Uri.fromFile(file);
-        }
+        return FFileProvider.getUri(context, file);
     }
 }
