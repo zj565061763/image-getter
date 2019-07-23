@@ -11,7 +11,7 @@ import com.sd.lib.imggetter.impl.FImageGetter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
-    public static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
