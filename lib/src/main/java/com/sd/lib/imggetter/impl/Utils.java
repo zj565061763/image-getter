@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 
-import com.sd.lib.fileprovider.FFileProvider;
+import com.sd.lib.fileuri.FFileUri;
 
 import java.io.File;
 import java.util.UUID;
@@ -54,6 +54,6 @@ class Utils
         if (file == null)
             throw new IllegalArgumentException("file is null");
 
-        return FFileProvider.getUri(context, file);
+        return FFileUri.get(context, file);
     }
 }
